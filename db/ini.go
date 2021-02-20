@@ -15,8 +15,26 @@ type column struct {
 }
 
 type table struct {
-	column  *column
+	columns []column
 	tblName string
+}
+
+func createColumnData(n string, t string, pk bool) *column {
+	return &column{
+		name:   n,
+		dbType: t,
+		pk:     pk,
+	}
+
+}
+
+func (c *column) columnString() string {
+
+	if c.pk == true {
+		return fmt.Sprintf("%s %s not null primary key", c.name, c.dbType)
+	}
+
+	return fmt.Sprintf("%s %s", c.name, c.dbType)
 }
 
 func CreateDB(f string) {
@@ -30,8 +48,14 @@ func CreateDB(f string) {
 	}
 
 	defer db.Close()
+	id := createColumnData("id", "integer", true)
+	name := createColumnData("name", "text", false)
 
-	sqlStmt := fmt.Sprintf("create table tbl_default (id integer not null primary key, name text);")
+	sqlStmt := fmt.Sprintf(`
+	    CREATE TABLE tbl_default (
+		%s,
+		%s);
+	    `, id.columnString(), name.columnString())
 
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
