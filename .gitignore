@@ -18,3 +18,7 @@
 # Ignore vim swap files
 *.swp
 *.swo
+
+
+# Ignore DB files
+*.db
