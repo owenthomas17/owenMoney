@@ -10,7 +10,7 @@ func main() {
 
 	if len(args) <= 1 {
 		cmd.PrintHelp()
-		os.Exit(1)
+		os.Exit(0)
 	}
 
 	cmd.ProcessArgs(args[1:])

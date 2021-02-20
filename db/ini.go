@@ -19,7 +19,7 @@ type table struct {
 	tblName string
 }
 
-func CreateDB(f string, t string) {
+func CreateDB(f string) {
 	filePath := fmt.Sprintf("./%s.db", f)
 
 	os.Remove(filePath)
@@ -31,7 +31,7 @@ func CreateDB(f string, t string) {
 
 	defer db.Close()
 
-	sqlStmt := fmt.Sprintf("create table %s (id integer not null primary key, name text);", t)
+	sqlStmt := fmt.Sprintf("create table tbl_default (id integer not null primary key, name text);")
 
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
