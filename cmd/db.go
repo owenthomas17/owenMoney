@@ -5,18 +5,9 @@ import (
 	"fmt"
 )
 
-func PrintHelp() {
-	fmt.Println(`
-Please choose one of the following commands:
-db
-help
-    `)
+func DbInitFlagSet() *dbInitFlags {
 
-}
-
-func DbFlagSet() *DbFlags {
-
-	dbFlags := &DbFlags{
+	dbFlags := &dbInitFlags{
 		fs: flag.NewFlagSet("db", flag.ExitOnError),
 	}
 
@@ -26,8 +17,20 @@ func DbFlagSet() *DbFlags {
 	return dbFlags
 }
 
-type DbFlags struct {
+type dbInitFlags struct {
 	fs      *flag.FlagSet
 	dbName  string
 	tblName string
+}
+
+func parseDbFlags(args []string) error {
+	switch args[0] {
+	case "init":
+		dbFlagSet := DbInitFlagSet()
+		if err := dbFlagSet.fs.Parse(args[1:]); err == nil {
+			fmt.Println(dbFlagSet.dbName)
+			fmt.Println(dbFlagSet.tblName)
+		}
+	}
+	return nil
 }
