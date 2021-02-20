@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"flag"
-	"fmt"
+	"owenMoney/db"
 )
 
 func DbInitFlagSet() *dbInitFlags {
@@ -28,8 +28,7 @@ func parseDbFlags(args []string) error {
 	case "init":
 		dbFlagSet := DbInitFlagSet()
 		if err := dbFlagSet.fs.Parse(args[1:]); err == nil {
-			fmt.Println(dbFlagSet.dbName)
-			fmt.Println(dbFlagSet.tblName)
+			db.CreateDB(dbFlagSet.dbName, dbFlagSet.tblName)
 		}
 	}
 	return nil
