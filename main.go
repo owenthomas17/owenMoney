@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"owenMoney/cmd"
 )
 
 func DbFlagSet() *DbFlags {
@@ -24,15 +25,6 @@ type DbFlags struct {
 	tblName string
 }
 
-func printHelp() {
-	fmt.Println(`
-Please choose one of the following commands:
-db
-help
-    `)
-
-}
-
 func processArgs(args []string) error {
 
 	switch args[0] {
@@ -43,7 +35,7 @@ func processArgs(args []string) error {
 			fmt.Println(dbFlagSet.tblName)
 		}
 	case "help":
-		printHelp()
+		cmd.PrintHelp()
 		os.Exit(0)
 	}
 
@@ -54,7 +46,7 @@ func main() {
 	args := os.Args
 
 	if len(args) <= 1 {
-		printHelp()
+		cmd.PrintHelp()
 		os.Exit(1)
 	}
 
