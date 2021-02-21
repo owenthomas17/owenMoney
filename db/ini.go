@@ -19,15 +19,6 @@ type table struct {
 	tblName string
 }
 
-func createColumnData(n string, t string, pk bool) *column {
-	return &column{
-		name:   n,
-		dbType: t,
-		pk:     pk,
-	}
-
-}
-
 func (c *column) columnString() string {
 
 	if c.pk == true {
@@ -48,8 +39,8 @@ func CreateDB(f string) {
 	}
 
 	defer db.Close()
-	id := createColumnData("id", "integer", true)
-	name := createColumnData("name", "text", false)
+	id := column{"id", "integer", true}
+	name := column{"name", "text", false}
 
 	sqlStmt := fmt.Sprintf(`
 	    CREATE TABLE tbl_default (
