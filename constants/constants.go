@@ -20,9 +20,8 @@ func SetDbFilePath() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	SetDbFilePath()
 }
 
 func SetDbFullFilePath() {
-	DbFullFilePath = fmt.Sprintf("%s%s", DbFilePath, DbFileName)
+	DbFullFilePath = fmt.Sprintf("%s/%s", DbFilePath, DbFileName)
 }

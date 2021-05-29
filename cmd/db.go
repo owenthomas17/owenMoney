@@ -35,7 +35,9 @@ func parseDbFlags(args []string) error {
 		dbFlagSet := DbInitFlagSet()
 		if err := dbFlagSet.fs.Parse(args[1:]); err == nil {
 			constants.SetDbFileName(dbFlagSet.dbName)
-			db.CreateDB()
+			constants.SetDbFilePath()
+			constants.SetDbFullFilePath()
+			db.InitDb()
 		}
 	default:
 		PrintHelp()
