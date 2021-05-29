@@ -23,9 +23,23 @@ func ShowAll() {
 	    select * from tbl_default
 	`)
 
-	_, err = db.Exec(sqlStmt)
+	rows, err := db.Query(sqlStmt)
 	if err != nil {
 		log.Fatalf("%q: %s\n", err, sqlStmt)
+	}
+	defer rows.Close()
+	for rows.Next() {
+		var id int
+		var expense_name string
+		var expense_type string
+		var cost float64
+
+		err = rows.Scan(&id, &expense_name, &expense_type, &cost)
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Println(id, expense_name, expense_type, cost)
 	}
 
 }
