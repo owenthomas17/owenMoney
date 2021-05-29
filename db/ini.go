@@ -29,9 +29,15 @@ func (c *column) columnString() string {
 	return fmt.Sprintf("%s %s", c.name, c.dbType)
 }
 
-func CreateDB() {
-	os.Remove(constants.DbFullFilePath)
+func InitDb() {
+	fmt.Println(constants.DbFilePath)
+	createDb()
+	createDbTables()
 
+}
+
+func createDbTables() {
+	log.Printf("Connecting to database at: %s", constants.DbFullFilePath)
 	db, err := sql.Open("sqlite3", constants.DbFullFilePath)
 	if err != nil {
 		log.Fatal(err)
@@ -41,6 +47,7 @@ func CreateDB() {
 	id := column{"id", "integer", true}
 	name := column{"name", "text", false}
 
+	log.Printf("Creating the default tables for %s", constants.DbFileName)
 	sqlStmt := fmt.Sprintf(`
 	    CREATE TABLE tbl_default (
 		%s,
@@ -51,5 +58,23 @@ func CreateDB() {
 	if err != nil {
 		log.Printf("%q: %s\n", err, sqlStmt)
 	}
+
+}
+
+func checkDbFileExists() bool {
+	log.Printf("Checking if the database file already exists at: %s", constants.DbFullFilePath)
+	info, err := os.Stat(constants.DbFullFilePath)
+
+	if err != nil {
+		return false
+	}
+
+	return !info.IsDir()
+}
+
+func createDb() {
+	checkDbFileExists()
+	log.Printf("Removing current database file at: %s", constants.DbFullFilePath)
+	os.Remove(constants.DbFullFilePath)
 
 }
