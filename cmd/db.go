@@ -53,14 +53,10 @@ func parseDbFlags(args []string) error {
 	case "init":
 		dbFlagSet := DbInitFlagSet()
 		if err := dbFlagSet.fs.Parse(args[1:]); err == nil {
-			if args[1] == "-help" || args[1] == "help" {
-				dbFlagSet.fs.PrintDefaults()
-			} else {
-				constants.SetDbFileName(dbFlagSet.dbName)
-				constants.SetDbFilePath(dbFlagSet.dbFilePath)
-				constants.SetDbFullFilePath()
-				db.InitDb()
-			}
+			constants.SetDbFileName(dbFlagSet.dbName)
+			constants.SetDbFilePath(dbFlagSet.dbFilePath)
+			constants.SetDbFullFilePath()
+			db.InitDb()
 		}
 	default:
 		printDbHelp()
