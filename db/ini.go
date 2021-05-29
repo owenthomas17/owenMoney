@@ -20,7 +20,7 @@ type table struct {
 	tblName string
 }
 
-func (c *column) columnString() string {
+func (c *column) columnStringBuilder() string {
 
 	if c.pk == true {
 		return fmt.Sprintf("%s %s not null primary key", c.name, c.dbType)
@@ -45,14 +45,21 @@ func createDbTables() {
 
 	defer db.Close()
 	id := column{"id", "integer", true}
-	name := column{"name", "text", false}
+	expenseName := column{"expense_name", "text", false}
+	expenseType := column{"expense_type", "text", false}
+	cost := column{"cost", "integer", false}
 
 	log.Printf("Creating the default tables for %s", constants.DbFileName)
 	sqlStmt := fmt.Sprintf(`
 	    CREATE TABLE tbl_default (
 		%s,
+		%s,
+		%s,
 		%s);
-	    `, id.columnString(), name.columnString())
+	    `, id.columnStringBuilder(),
+				 expenseName.columnStringBuilder(),
+				 expenseType.columnStringBuilder(),
+				 cost.columnStringBuilder())
 
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
