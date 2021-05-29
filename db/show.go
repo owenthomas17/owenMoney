@@ -8,8 +8,6 @@ import (
 	"owenMoney/constants"
 )
 
-
-
 func ShowAll() {
 	log.Print(constants.DbFullFilePath)
 	db, err := sql.Open("sqlite3", constants.DbFullFilePath)
