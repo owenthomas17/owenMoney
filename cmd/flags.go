@@ -8,8 +8,9 @@ import (
 func PrintHelp() {
 	fmt.Println(`
 Please choose one of the following commands:
-db
-help
+
+owenmoney db   - Interacts configuration of the backend database
+owenmoney help - Prints this help message
     `)
 
 }

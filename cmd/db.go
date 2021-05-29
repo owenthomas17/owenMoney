@@ -3,6 +3,7 @@ package cmd
 import (
 	"flag"
 	"os"
+	"owenMoney/constants"
 	"owenMoney/db"
 )
 
@@ -33,7 +34,8 @@ func parseDbFlags(args []string) error {
 	case "init":
 		dbFlagSet := DbInitFlagSet()
 		if err := dbFlagSet.fs.Parse(args[1:]); err == nil {
-			db.CreateDB(dbFlagSet.dbName)
+			constants.SetDbFileName(dbFlagSet.dbName)
+			db.CreateDB()
 		}
 	default:
 		PrintHelp()

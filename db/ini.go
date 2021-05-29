@@ -6,6 +6,7 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"os"
+	"owenMoney/constants"
 )
 
 type column struct {
@@ -28,12 +29,10 @@ func (c *column) columnString() string {
 	return fmt.Sprintf("%s %s", c.name, c.dbType)
 }
 
-func CreateDB(f string) {
-	filePath := fmt.Sprintf("./%s.db", f)
+func CreateDB() {
+	os.Remove(constants.DbFullFilePath)
 
-	os.Remove(filePath)
-
-	db, err := sql.Open("sqlite3", filePath)
+	db, err := sql.Open("sqlite3", constants.DbFullFilePath)
 	if err != nil {
 		log.Fatal(err)
 	}
