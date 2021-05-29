@@ -22,6 +22,8 @@ func ProcessArgs(args []string) error {
 		parseDbFlags(args[1:])
 	case "show":
 		parseShowFlags(args[1:])
+	case "add":
+		parseAddFlags(args[1:])
 	case "help":
 		PrintHelp()
 		os.Exit(0)
