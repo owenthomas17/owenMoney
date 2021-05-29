@@ -30,10 +30,8 @@ func (c *column) columnStringBuilder() string {
 }
 
 func InitDb() {
-	fmt.Println(constants.DbFilePath)
 	createDb()
 	createDbTables()
-
 }
 
 func createDbTables() {
@@ -57,9 +55,9 @@ func createDbTables() {
 		%s,
 		%s);
 	    `, id.columnStringBuilder(),
-				 expenseName.columnStringBuilder(),
-				 expenseType.columnStringBuilder(),
-				 cost.columnStringBuilder())
+		expenseName.columnStringBuilder(),
+		expenseType.columnStringBuilder(),
+		cost.columnStringBuilder())
 
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
