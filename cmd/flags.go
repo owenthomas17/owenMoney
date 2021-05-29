@@ -20,6 +20,8 @@ func ProcessArgs(args []string) error {
 	switch args[0] {
 	case "db":
 		parseDbFlags(args[1:])
+	case "show":
+		parseShowFlags(args[1:])
 	case "help":
 		PrintHelp()
 		os.Exit(0)
