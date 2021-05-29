@@ -11,9 +11,10 @@ import (
 )
 
 type column struct {
-	name   string
-	dbType string
-	pk     bool
+	name   				string
+	dbType 				string
+	pk     				bool
+	autoincrement bool
 }
 
 type table struct {
@@ -24,6 +25,9 @@ type table struct {
 func (c *column) columnStringBuilder() string {
 
 	if c.pk == true {
+		if c.autoincrement == true {
+			return fmt.Sprintf("%s %s not null primary key autoincrement", c.name, c.dbType)
+		}
 		return fmt.Sprintf("%s %s not null primary key", c.name, c.dbType)
 	}
 
@@ -44,10 +48,10 @@ func createDbTables() {
 	}
 
 	defer db.Close()
-	id := column{"id", "integer", true}
-	expenseName := column{"expense_name", "text", false}
-	expenseType := column{"expense_type", "text", false}
-	cost := column{"cost", "integer", false}
+	id := column{"id", "integer", true, true}
+	expenseName := column{"expense_name", "text", false, false}
+	expenseType := column{"expense_type", "text", false, false}
+	cost := column{"cost", "real", false, false}
 
 	log.Printf("Creating the default tables for %s", constants.DbFileName)
 	sqlStmt := fmt.Sprintf(`
