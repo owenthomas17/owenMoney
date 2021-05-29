@@ -1,6 +1,7 @@
 package db
 
 import (
+	"bufio"
 	"database/sql"
 	"fmt"
 	_ "github.com/mattn/go-sqlite3"
@@ -30,8 +31,9 @@ func (c *column) columnStringBuilder() string {
 }
 
 func InitDb() {
-	createDb()
-	createDbTables()
+	if cleanDb() {
+		createDbTables()
+	}
 }
 
 func createDbTables() {
@@ -61,7 +63,7 @@ func createDbTables() {
 
 	_, err = db.Exec(sqlStmt)
 	if err != nil {
-		log.Printf("%q: %s\n", err, sqlStmt)
+		log.Fatalf("%q: %s\n", err, sqlStmt)
 	}
 
 }
@@ -71,15 +73,27 @@ func checkDbFileExists() bool {
 	info, err := os.Stat(constants.DbFullFilePath)
 
 	if err != nil {
+		log.Printf("Database file doesn't already exist")
 		return false
 	}
 
 	return !info.IsDir()
 }
 
-func createDb() {
-	checkDbFileExists()
-	log.Printf("Removing current database file at: %s", constants.DbFullFilePath)
-	os.Remove(constants.DbFullFilePath)
-
+func cleanDb() bool {
+	if checkDbFileExists() {
+		log.Printf("Database file already exists, cleaning by removing file: %s", constants.DbFullFilePath)
+		reader := bufio.NewReader(os.Stdin)
+		fmt.Print("Removing database file, this will delete all contents. Are you sure? y/N: ")
+		confirmation, _ := reader.ReadString('\n')
+		if confirmation == "y\n" || confirmation == "Y\n" {
+			log.Printf("Deleting database file: %s", constants.DbFullFilePath)
+			os.Remove(constants.DbFullFilePath)
+			return true
+		} else {
+			log.Printf("Leaving existing DB in place")
+			return false
+		}
+	}
+	return true
 }
