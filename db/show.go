@@ -25,7 +25,10 @@ func ShowAll() {
 	if err != nil {
 		log.Fatalf("%q: %s\n", err, sqlStmt)
 	}
+
 	defer rows.Close()
+	fmt.Println("|Expense Name | Expense Type | Cost|")
+	fmt.Println("------------------------------------")
 	for rows.Next() {
 		var id int
 		var expense_name string
@@ -37,7 +40,7 @@ func ShowAll() {
 			log.Fatal(err)
 		}
 
-		fmt.Println(id, expense_name, expense_type, cost)
+		fmt.Printf("|%s | %s | %.2f|\n", expense_name, expense_type, cost)
 	}
 
 }
